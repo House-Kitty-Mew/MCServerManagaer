@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Config>
+  
+  <ProjectRoot path="" />
+
+  <Logging enabled="true" />
+  <JavaDebug enabled="false" />
+  <Optimizations enabled="true" useZGC="true" />
+  <ConsoleOutput enabled="false" />
+
+  
+  <JavaExecutable path="C:\Program Files\Java\jdk-21\bin\java.exe" />
+
+  <Memory initialIfOptimized="7G" maxIfOptimized="15G" initialElse="1G" maxElse="5G" />
+  <WorldPath>cherrysworld</WorldPath>
+  <JarName>quilt-server-launch.jar</JarName>
+  <RestartSleepSeconds>120</RestartSleepSeconds>
+  <OnlineUpdate>
+    <Enable>false</Enable>
+	  <ManifestUrl>https://example.com/functions_remote.xml</ManifestUrl>
+  </OnlineUpdate>
+</Config>

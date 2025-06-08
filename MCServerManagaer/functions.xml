@@ -1,0 +1,9 @@
+<Functions>
+  <Script file="Setup-Environment.ps1" />
+  <Script file="Logging.ps1" />
+  <Script file="Cleanup-SessionLock.ps1" />
+  <Script file="JavaArgs.ps1" />
+  <Script file="ProcessLoop.ps1" />
+  <Script file="AutoRestart.ps1" />
+  <Script file="Update-FunctionsManifest.ps1" />
+</Functions>

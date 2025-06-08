@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<FunctionDatabase>
+  <Core>
+    <Script>Setup-Environment.ps1</Script>
+    <Script>Logging.ps1</Script>
+    <Script>Cleanup-SessionLock.ps1</Script>
+    <Script>JavaArgs.ps1</Script>
+    <Script>ProcessLoop.ps1</Script>
+  </Core>
+  <Custom>
+    <Script>AutoRestart.ps1</Script>
+    <Script>Update-FunctionsManifest.ps1</Script>
+  </Custom>
+  <Custom>
+  </Custom>
+</FunctionDatabase>

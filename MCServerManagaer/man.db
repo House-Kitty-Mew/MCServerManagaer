@@ -1,0 +1,78 @@
+# MCServerManagaer Manual Database
+
+## Overview
+This manager handles automated Minecraft server startup, logging, watchdog behavior, rollback, and secure remote updates.
+
+---
+
+## Scripts and Functionality
+### startserver.ps1
+- **Path**: `MCServerManagaer/startserver.ps1`
+- **Version**: `1.0.0`
+- **Description**: Main entry point. Loads config, validates environment, starts Minecraft server with logging, auto-restart, and optional watchdog behavior.
+
+### AutoRestart.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/AutoRestart.ps1`
+- **Version**: `1.0.0`
+- **Description**: Monitors the server process and automatically restarts it if it crashes or exits unexpectedly.
+
+### Cleanup-SessionLock.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Cleanup-SessionLock.ps1`
+- **Version**: `1.0.0`
+- **Description**: Removes leftover session.lock files from world directories to prevent startup errors.
+
+### Generate-RemoteManifest.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Generate-RemoteManifest.ps1`
+- **Version**: `\s*["''](.+?)["'']') {`
+- **Description**: Scans all local scripts and generates a remote manifest XML. Automatically signs hashes and regenerates keys if missing.
+
+### JavaArgs.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/JavaArgs.ps1`
+- **Version**: `1.0.0`
+- **Description**: Generates dynamic Java launch parameters based on memory settings and GC preferences from the config file.
+
+### Logging.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Logging.ps1`
+- **Version**: `1.0.0`
+- **Description**: Initializes log redirection to both the console and rotating log files, with timestamps and custom output formatting.
+
+### ProcessLoop.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/ProcessLoop.ps1`
+- **Version**: `1.0.0`
+- **Description**: Core loop that maintains server lifecycle: starts, monitors, and restarts the process as needed.
+
+### Rollback-PreviousVersions.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Rollback-PreviousVersions.ps1`
+- **Version**: `1.0.0`
+- **Description**: Reads rollback_history.json and allows user to interactively revert any script to a prior version using cached zips.
+
+### Setup-Environment.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Setup-Environment.ps1`
+- **Version**: `1.0.0`
+- **Description**: Sets necessary environment variables and validates script integrity/signatures before launching other operations.
+
+### Update-FunctionsManifest.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Update-FunctionsManifest.ps1`
+- **Version**: `1.0.0`
+- **Description**: Scans local scripts, extracts versions, hashes and signatures, and updates functions.db.xml accordingly.
+
+### Update-OnlineResources.ps1
+- **Path**: `MCServerManagaer/custom_starter_scripts/Update-OnlineResources.ps1`
+- **Version**: `1.0.0`
+- **Description**: Checks online manifest against local versions and updates scripts by downloading and applying zipped replacements.
+
+---
+
+## Online Update Settings
+- Defined in `config.xml` under `<OnlineUpdate>`
+- Set `<Enable>` to `true` to activate version checks against a remote manifest XML.
+- Manifest must be hosted at `<ManifestUrl>` and return valid version/hash/signature for scripts.
+
+## Rollback
+- History is logged in `F_META/rollback_history.json`.
+- Use `Rollback-PreviousVersions.ps1` to selectively restore older versions.
+
+## Remote Manifest Generation
+- Use `Generate-RemoteManifest.ps1` to regenerate `functions_remote.xml` with live data.
+- Automatically generates keypair if `private.pem` is missing.
+- Script reads `$ScriptVersion` from each `.ps1` file and signs the hash using the private key.
