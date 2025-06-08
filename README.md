@@ -1,61 +1,52 @@
 # MCServerManagaer
 PowerShell toolkit for managing Minecraft servers with auto-updates, rollback, and remote syncing.
 
-## Features
-- 🔄 Auto-restart and crash recovery
-- 🧪 Java argument tuning (G1GC, ZGC support)
-- 🧼 Session lock cleanup
-- 🧾 Logging with timestamps
-- 🌐 Remote version checking and updates via manifest
-- 🛡️ Script integrity verification (hash + digital signature)
-- ♻️ Rollback support with history
+## 📁 Folder Structure
+```
+MCServerManagaer/
+├── MinecraftServerFiles/           # Your actual Minecraft server jar, world, logs, etc
+│   └── server.jar                 # Required server jar
+├── config.xml                    # Main configuration for memory, updates, etc
+├── man.db                        # Manual documentation
+├── F_META/                       # Rollback history and changelogs
+├── ONLINE_RESOURCES/            # Remote script update handling
+├── custom_starter_scripts/      # All PowerShell tools and automation scripts
+└── startserver.ps1               # Entry point to launch and manage the server
+```
 
-## Getting Started
-1. Clone or download the repo.
-2. Place your server `.jar` in the root folder.
-3. Edit `config.xml` to match your server path, RAM, and update preferences.
-4. Run `startserver.ps1` to launch and begin management.
+## 🚀 Getting Started
+1. Place your Minecraft `server.jar` inside the `MinecraftServerFiles/` folder.
+2. Edit `config.xml` in the root to update memory settings and enable online features.
+3. Accept the EULA by editing `MinecraftServerFiles/eula.txt` and setting it to `true`.
+4. Run `startserver.ps1` to launch the server.
 
-## Configuration
-Open `MCServerManagaer/config.xml` and review these critical options:
+## ⚙️ Configuration Tips (`config.xml`)
+- `<InitialRam>` and `<MaxRam>`: Java memory settings.
+- `<UseZGC>`: Enable/disable Z Garbage Collector.
+- `<ServerJar>`: Leave as `.\MinecraftServerFiles\server.jar` unless customized.
 
-### Java Settings:
-- `<InitialRam>` and `<MaxRam>`: Set memory allocation for Java.
-- `<UseZGC>`: Use Z Garbage Collector (true/false).
-
-### Online Update Settings:
-- `<Enable>`: Set to `true` to enable automatic script updates.
-- `<ManifestUrl>`: Point this to your hosted `functions_remote.xml` file.
-
-### Example:
+### 🔄 Online Update
 ```xml
 <OnlineUpdate>
   <Enable>true</Enable>
   <ManifestUrl>https://example.com/functions_remote.xml</ManifestUrl>
 </OnlineUpdate>
 ```
+- Host `functions_remote.xml` and zipped `.ps1` updates online to keep scripts in sync.
+- Run `Update-OnlineResources.ps1` to auto-apply script updates.
 
-## Updating the Manifest
-If you're hosting updates remotely:
-1. Edit script versions via `$ScriptVersion = 'x.x.x'` in each `.ps1`.
-2. Run `Generate-RemoteManifest.ps1` to create `functions_remote.xml`.
-   - If `private.pem` doesn't exist, it's generated automatically.
-3. Upload the `functions_remote.xml` and any updated zipped scripts to your web host.
+## 🔧 Script Maintenance
+- Use `Update-FunctionsManifest.ps1` after editing or adding scripts to refresh the database.
+- Use `Generate-RemoteManifest.ps1` to export a signed remote XML for deployment.
+   - Automatically creates `private.pem` and `public.pem` if missing.
 
-## Rollback
-- Every script update is tracked in `F_META/rollback_history.json`.
-- Use `Rollback-PreviousVersions.ps1` to interactively roll back any script.
+## ♻️ Rollback
+- Every script update is logged to `F_META/rollback_history.json`.
+- Run `Rollback-PreviousVersions.ps1` to choose and revert any script by version/hash.
 
-## Security
-- Scripts are verified using SHA256 + digital signatures from your `private.pem`.
-- Public key is stored as `public.pem` for verification.
-
-## Recommended Workflow
-1. Modify or add `.ps1` scripts.
-2. Run `Update-FunctionsManifest.ps1` to hash + version them.
-3. (Optional) Run `Generate-RemoteManifest.ps1` to publish updates online.
-4. Enable online updates in `config.xml`.
-5. Use `Update-OnlineResources.ps1` to auto-sync new versions from your manifest.
+## 🔐 Security
+- Each script is hash-verified and signed with your private key before being used.
+- Public key verification occurs in `Setup-Environment.ps1`.
 
 ---
 **Licensor:** Donovan M. H. Galloway  
